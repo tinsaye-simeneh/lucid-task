@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { List, TextInput } from "@mantine/core";
+import { List, TextInput, Badge, Group, ActionIcon } from "@mantine/core";
 import { useAutocomplete } from "@/hooks/useAutocomplete";
+import { IconX } from "@tabler/icons-react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function VariableAutocomplete({
   onInsertVariable,
 }: {
@@ -10,14 +10,32 @@ export default function VariableAutocomplete({
 }) {
   const { data: suggestions } = useAutocomplete();
   const [query, setQuery] = useState("");
+  const [selectedVariables, setSelectedVariables] = useState<string[]>([]);
 
   const filteredSuggestions = Array.from(
     new Map(
       (suggestions || [])
-        .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()))
-        .map((s) => [s.id, s])
+        .filter(
+          // eslint-disable-next-line
+          (s: any) =>
+            s.name.toLowerCase().includes(query.toLowerCase()) &&
+            !selectedVariables.includes(s.name)
+        )
+
+        // eslint-disable-next-line
+        .map((s: any) => [s.id, s])
     ).values()
   );
+
+  const handleSelectVariable = (variable: string) => {
+    setSelectedVariables((prev) => [...prev, variable]);
+    onInsertVariable(variable);
+    setQuery("");
+  };
+
+  const handleRemoveVariable = (variable: string) => {
+    setSelectedVariables((prev) => prev.filter((v) => v !== variable));
+  };
 
   return (
     <div>
@@ -26,14 +44,31 @@ export default function VariableAutocomplete({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
+
+      <Group mt="sm">
+        {selectedVariables.map((variable) => (
+          <Badge
+            key={variable}
+            rightSection={
+              <ActionIcon
+                size="xs"
+                color="red"
+                onClick={() => handleRemoveVariable(variable)}
+              >
+                <IconX size="0.8rem" />
+              </ActionIcon>
+            }
+          >
+            {variable}
+          </Badge>
+        ))}
+      </Group>
+
       {query && filteredSuggestions.length > 0 && (
-        <List>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {filteredSuggestions.map((s: any, index) => (
-            <List.Item
-              key={`${s.id}-${index}`}
-              onClick={() => onInsertVariable(s.name)}
-            >
+        <List mt="sm">
+          {/* eslint-disable-next-line */}
+          {filteredSuggestions.map((s: any) => (
+            <List.Item key={s.id} onClick={() => handleSelectVariable(s.name)}>
               {s.name}
             </List.Item>
           ))}

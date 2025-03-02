@@ -9,10 +9,13 @@ import { Paper, Text } from "@mantine/core";
 import { useEffect } from "react";
 
 interface FormulaEditorProps {
+  selectedVariables: string[]; // Accept selected variables
   onInsertVariable: (variable: string) => void;
 }
 
-export default function FormulaEditor({}: FormulaEditorProps) {
+export default function FormulaEditor({
+  selectedVariables,
+}: FormulaEditorProps) {
   const { formula, setFormula, result, setResult } = useFormulaStore();
 
   const editor = useEditor({
@@ -23,10 +26,16 @@ export default function FormulaEditor({}: FormulaEditorProps) {
       setFormula(newFormula);
 
       try {
-        const evalResult = evaluate(newFormula);
+        // Convert selected variables into values (Example: { A: 5, B: 10, C: 2 })
+        const variableValues = Object.fromEntries(
+          selectedVariables.map((variable, index) => [variable, index + 1]) // Assign values dynamically
+        );
+
+        // Evaluate the formula with variable values
+        const evalResult = evaluate(newFormula, variableValues);
         setResult(evalResult);
       } catch {
-        setResult("Error");
+        setResult("Invalid Expression");
       }
     },
   });
@@ -38,7 +47,7 @@ export default function FormulaEditor({}: FormulaEditorProps) {
   }, [formula, editor]);
 
   return (
-    <Paper shadow="xs" p="md">
+    <Paper shadow="xs" p="md" bg="gray">
       <EditorContent editor={editor} />
       <Text size="lg" mt="md">
         Result: {result}
