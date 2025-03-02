@@ -7,6 +7,9 @@ import { useEffect, useState, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import "../styles/globals.css";
 import "@mantine/tiptap/styles.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -45,24 +48,26 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body>
-        <MantineProvider>
-          {isPageLoading && (
-            <Progress
-              value={progress}
-              color="blue"
-              size="xs"
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-              }}
-            />
-          )}{" "}
-          <Notifications position="top-right" zIndex={9999} />
-          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        </MantineProvider>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider>
+            {isPageLoading && (
+              <Progress
+                value={progress}
+                color="blue"
+                size="xs"
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 1000,
+                }}
+              />
+            )}{" "}
+            <Notifications position="top-right" zIndex={9999} />
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          </MantineProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
