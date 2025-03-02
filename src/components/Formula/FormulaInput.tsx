@@ -24,6 +24,7 @@ export default function FormulaInput() {
       <VariableAutocomplete onInsertVariable={handleInsertVariable} />
 
       <Flex wrap="wrap" mt="md" gap="sm">
+        Selected Variables:
         {selectedVariables?.map((variable) => (
           <Chip key={variable} checked>
             {variable}{" "}

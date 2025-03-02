@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { FormulaTag } from "@/tiptap/FormulaTag";
 import { evaluate } from "mathjs";
@@ -74,10 +74,24 @@ export default function FormulaEditor({
   }, [operators, editor]);
 
   return (
-    <Paper shadow="xs" p="md" bg="yellow">
-      <Flex align="center" gap="md">
+    <Paper
+      shadow="xs"
+      p="md"
+      bg="blue"
+      w="100%"
+      maw={800}
+      className="border-radius-lg shadow-2xl border-black"
+      withBorder
+    >
+      <Flex align="center" gap="md" wrap="wrap" justify="flex-start">
         {selectedVariables.map((variable, index) => (
-          <Flex key={index} align="center" gap="sm">
+          <Flex
+            key={index}
+            align="center"
+            gap="sm"
+            className="flex-wrap"
+            maw="100%"
+          >
             <Text>{variable}</Text>
             {index < selectedVariables.length - 1 && (
               <Select
@@ -91,7 +105,11 @@ export default function FormulaEditor({
                 }}
                 data={["+", "-", "*", "/", "^"]}
                 styles={{
-                  input: { color: "black" },
+                  input: {
+                    color: "black",
+                    width: "100%",
+                    maxWidth: "150px",
+                  },
                   dropdown: { color: "black" },
                 }}
               />
@@ -99,7 +117,6 @@ export default function FormulaEditor({
           </Flex>
         ))}
       </Flex>
-      {/* <EditorContent editor={editor} /> */}
       <Text size="lg" mt="md">
         Result: {result}
       </Text>

@@ -36,6 +36,7 @@ export default function VariableAutocomplete({
   return (
     <div>
       <TextInput
+        className="md:w-60"
         placeholder="Type to search variables..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
