@@ -99,7 +99,7 @@ export default function FormulaEditor({
           </Flex>
         ))}
       </Flex>
-      <EditorContent editor={editor} />
+      {/* <EditorContent editor={editor} /> */}
       <Text size="lg" mt="md">
         Result: {result}
       </Text>

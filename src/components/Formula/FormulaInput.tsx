@@ -9,14 +9,12 @@ import { FaTimes } from "react-icons/fa";
 export default function FormulaInput() {
   const [selectedVariables, setSelectedVariables] = useState<string[]>([]);
 
-  // ✅ Add variable (only if not already added)
   const handleInsertVariable = (variable: string) => {
     if (!selectedVariables.includes(variable)) {
       setSelectedVariables([...selectedVariables, variable]);
     }
   };
 
-  // ✅ Remove variable
   const handleRemoveVariable = (variable: string) => {
     setSelectedVariables((prev) => prev.filter((v) => v !== variable));
   };
@@ -25,7 +23,6 @@ export default function FormulaInput() {
     <Box my="lg" py="lg" px="xl" bg="blue">
       <VariableAutocomplete onInsertVariable={handleInsertVariable} />
 
-      {/* Selected Variables Display */}
       <Flex wrap="wrap" mt="md" gap="sm">
         {selectedVariables?.map((variable) => (
           <Chip key={variable} checked>
@@ -41,7 +38,6 @@ export default function FormulaInput() {
         ))}
       </Flex>
 
-      {/* Formula Editor */}
       <FormulaEditor selectedVariables={selectedVariables} />
     </Box>
   );

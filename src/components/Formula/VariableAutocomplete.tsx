@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { List, TextInput } from "@mantine/core";
 import { useAutocomplete } from "@/hooks/useAutocomplete";
@@ -20,7 +22,6 @@ export default function VariableAutocomplete({
             s.name.toLowerCase().includes(query.toLowerCase()) &&
             !selectedVariables.includes(s.name)
         )
-
         // eslint-disable-next-line
         .map((s: any) => [s.id, s])
     ).values()
