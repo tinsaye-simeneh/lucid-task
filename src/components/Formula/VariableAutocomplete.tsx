@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { List, TextInput, Badge, Group, ActionIcon } from "@mantine/core";
+import { List, TextInput } from "@mantine/core";
 import { useAutocomplete } from "@/hooks/useAutocomplete";
-import { IconX } from "@tabler/icons-react";
 
 export default function VariableAutocomplete({
   onInsertVariable,
@@ -33,10 +32,6 @@ export default function VariableAutocomplete({
     setQuery("");
   };
 
-  const handleRemoveVariable = (variable: string) => {
-    setSelectedVariables((prev) => prev.filter((v) => v !== variable));
-  };
-
   return (
     <div>
       <TextInput
@@ -45,31 +40,12 @@ export default function VariableAutocomplete({
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <Group mt="sm">
-        {selectedVariables.map((variable) => (
-          <Badge
-            key={variable}
-            rightSection={
-              <ActionIcon
-                size="xs"
-                color="red"
-                onClick={() => handleRemoveVariable(variable)}
-              >
-                <IconX size="0.8rem" />
-              </ActionIcon>
-            }
-          >
-            {variable}
-          </Badge>
-        ))}
-      </Group>
-
       {query && filteredSuggestions.length > 0 && (
         <List mt="sm">
           {/* eslint-disable-next-line */}
           {filteredSuggestions.map((s: any) => (
             <List.Item key={s.id} onClick={() => handleSelectVariable(s.name)}>
-              {s.name}
+              {s.name ? s.name : "Unknown Variable"}
             </List.Item>
           ))}
         </List>
