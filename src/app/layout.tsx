@@ -5,8 +5,7 @@ import { ColorSchemeScript, MantineProvider, Progress } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { useEffect, useState, Suspense } from "react";
 import { usePathname } from "next/navigation";
-import "../styles/globals.css";
-import "@mantine/tiptap/styles.css";
+import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
