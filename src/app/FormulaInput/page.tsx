@@ -1,6 +1,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import FormulaTag from "@/tiptap/FormulaTag";
+import { FormulaTag } from "@/tiptap/FormulaTag";
 import { useFormulaStore } from "@/store/useFormulaStore";
 import { useAutocomplete } from "@/hooks/useAutocomplete";
 import { evaluate } from "mathjs";
@@ -28,12 +28,21 @@ export default function FormulaInput() {
     },
   });
 
-  const insertVariable = (variable) => {
-    editor?.chain().focus().insertFormula(variable).run();
-    setQuery("");
+  const insertVariable = (variable: string) => {
+    if (editor) {
+      editor
+        .chain()
+        .focus()
+        .command(({ commands }) => {
+          return commands.insertFormula(variable);
+        })
+        .run();
+      setQuery("");
+    }
   };
 
-  const filteredSuggestions = suggestions?.filter((s) =>
+  // eslint-disable-next-line
+  const filteredSuggestions = suggestions?.filter((s: any) =>
     s.name.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -47,7 +56,8 @@ export default function FormulaInput() {
         />
         {query && filteredSuggestions?.length > 0 && (
           <List>
-            {filteredSuggestions.map((s) => (
+            {/* eslint-disable-next-line */}
+            {filteredSuggestions.map((s: any) => (
               <List.Item key={s.id} onClick={() => insertVariable(s.name)}>
                 {s.name}
               </List.Item>
